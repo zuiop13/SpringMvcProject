@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END 테스트 중입니다.$
+  $END 테스트 중입니다. - 라스트 테스트$
   </body>
 </html>
