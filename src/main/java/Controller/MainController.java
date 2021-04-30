@@ -47,6 +47,7 @@ public class MainController {
         String url = "jdbc:postgresql://localhost:5432/springdata";
         String username = "zuiop13";
         String password = "pass";
+        String gourl    = "err";
 
         try(Connection connection = DriverManager.getConnection(url,username,password)) {
             System.out.println("====================================");
@@ -54,13 +55,13 @@ public class MainController {
 
             //insert 현재 테스트 중입니다.
             String sql = "insert into account VALUES(1,'zuiop13','pass','5000');";
-
+            gourl = "insert";
             try(PreparedStatement statement = connection.prepareStatement(sql)){
                 statement.execute();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return "index";
+        return gourl;
     }
 }
