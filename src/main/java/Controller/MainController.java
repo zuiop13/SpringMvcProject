@@ -21,7 +21,7 @@ public class MainController {
     @RequestMapping(value = "/create",method = RequestMethod.GET)
     public String create() throws ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/springdata";
+        String url = "jdbc:postgresql://10.100.101.118:5432/springdata";
         String username = "zuiop13";
         String password = "pass";
 
@@ -44,7 +44,7 @@ public class MainController {
     @RequestMapping(value = "/insert",method = RequestMethod.GET)
     public String insert() throws ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/springdata";
+        String url = "jdbc:postgresql://10.100.101.118:5432/springdata";
         String username = "zuiop13";
         String password = "pass";
         String gourl    = "err";
