@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,15 +15,16 @@ import java.sql.SQLException;
 @Controller
 public class MainController {
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String test(){
-        System.out.printf("1111111111111");
+    public String test() throws UnknownHostException {
+        InetAddress ip = InetAddress.getLocalHost();
+        System.out.println("Host Address = [" + ip.getHostAddress()+ "]");
         return "index";
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.GET)
     public String create() throws ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://10.100.101.118:5432/springdata";
+        String url = "jdbc:postgresql://localhost:5432/springdata";
         String username = "zuiop13";
         String password = "pass";
 
@@ -44,7 +47,7 @@ public class MainController {
     @RequestMapping(value = "/insert",method = RequestMethod.GET)
     public String insert() throws ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://10.100.101.118:5432/springdata";
+        String url = "jdbc:postgresql://localhost:5432/springdata";
         String username = "zuiop13";
         String password = "pass";
         String gourl    = "err";
