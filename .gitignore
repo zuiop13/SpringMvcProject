@@ -1,4 +1,4 @@
 .idea
-warFile
+/warFile/
 # Project exclude paths
 /out/
