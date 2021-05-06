@@ -59,8 +59,9 @@ public class MainController {
             String sql = "insert into account VALUES(1,'zuiop13','pass');";
             gourl = "insert";
             try(PreparedStatement statement = connection.prepareStatement(sql)){
-                gourl    = "err";
                 statement.execute();
+            }catch (SQLException throwables){
+                gourl = "err";
             }
         } catch (SQLException throwables) {
             gourl    = "err";
