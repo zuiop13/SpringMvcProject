@@ -46,13 +46,12 @@ public class MainController {
 
     @RequestMapping(value = "/insert",method = RequestMethod.GET)
     public String insert() throws ClassNotFoundException, UnknownHostException {
-        InetAddress ip = InetAddress.getLocalHost();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@정성훈@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://"+ip.getHostAddress()+":5432/springdata";
+        String url = "jdbc:postgresql://"+"10.100.101.118"+":5432/springdata";
         String username = "zuiop13";
         String password = "pass";
         String gourl    = "err";
-        System.out.printf("url : "+url);
         try(Connection connection = DriverManager.getConnection(url,username,password)) {
             System.out.println("====================================");
             System.out.println("Test connection created "+connection);
