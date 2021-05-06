@@ -56,7 +56,7 @@ public class MainController {
             System.out.println("==========================================================");
             System.out.println("Test connection created "+connection);
             //insert 현재 테스트 중입니다.
-            String sql = "insert into account VALUES(1,'zuiop13','pass','5000');";
+            String sql = "insert into account VALUES(1,'zuiop13','pass');";
             gourl = "insert";
             try(PreparedStatement statement = connection.prepareStatement(sql)){
                 gourl    = "err";
