@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=springdata
+      - POSTGRES_USER=zuiop13
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  tomcat:
+    image: zuiop13/spring-project-tomcat:2.0
+    volumes:
+      - ./logs:/usr/local/tomcat/logs
+    ports:
+      - "8080:8080"
