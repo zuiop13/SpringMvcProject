@@ -1,72 +1,62 @@
 package Controller;
 
+import Controller.xmlFileSearch.XmlFileSearch;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 
 @Controller
 public class MainController {
+
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String test() throws UnknownHostException {
-        InetAddress ip = InetAddress.getLocalHost();
-        System.out.println("Host Address = [" + ip.getHostAddress()+ "]");
+    public String test(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        //model.addAttribute("Data",xml.selectKosisData());
         return "index";
     }
 
-    @RequestMapping(value = "/create",method = RequestMethod.GET)
-    public String create() throws ClassNotFoundException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.1.1:5432/springdata";
-        String username = "zuiop13";
-        String password = "pass";
+    @RequestMapping(value = "/test01",method = RequestMethod.GET)
+    public @ResponseBody
+    String test01(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        Gson gson = new Gson();
+        return gson.toJson(xml.selectKosisData());
+    }
 
-        try(Connection connection = DriverManager.getConnection(url,username,password)) {
-            System.out.println("====================================");
-            System.out.println("Test connection created "+connection);
+    @RequestMapping(value = "/test02",method = RequestMethod.GET)
+    public @ResponseBody
+    String test02(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        Gson gson = new Gson();
+        return gson.toJson(xml.localdataSelect());
+    }
 
-            //create
-            String sql = "create table account (id int,username varchar(255),password varchar(255));";
-
-            try(PreparedStatement statement = connection.prepareStatement(sql)){
-                statement.execute();
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    @RequestMapping(value = "/test03",method = RequestMethod.GET)
+    public @ResponseBody
+    String test03(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        model.addAttribute("Data",xml.selectKosisData());
         return "index";
     }
 
-    @RequestMapping(value = "/insert",method = RequestMethod.GET)
-    public String insert() throws ClassNotFoundException, UnknownHostException {
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@정성훈@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://"+"127.0.1.1"+":5432/springdata";
-        String username = "zuiop13";
-        String password = "pass";
-        String gourl;
-        try(Connection connection = DriverManager.getConnection(url,username,password)) {
-            System.out.println("==========================================================");
-            System.out.println("Test connection created "+connection);
-            //insert 현재 테스트 중입니다.
-            String sql = "insert into account VALUES(1,'zuiop13','pass');";
-            gourl = "insert";
-            try(PreparedStatement statement = connection.prepareStatement(sql)){
-                statement.execute();
-            }catch (SQLException throwables){
-                gourl = "err";
-            }
-        } catch (SQLException throwables) {
-            gourl    = "err";
-            throwables.printStackTrace();
-        }
-        return gourl;
+    @RequestMapping(value = "/insertAll",method = RequestMethod.GET)
+    public String insertAll(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsertAll();
+        return "index";
     }
+
+    @RequestMapping(value = "/insertUpdate",method = RequestMethod.GET)
+    public String insertUpdate(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsertUpdate();
+        return "index";
+    }
+
 }
