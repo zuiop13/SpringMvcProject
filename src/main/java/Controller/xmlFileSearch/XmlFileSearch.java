@@ -37,7 +37,7 @@ public class XmlFileSearch {
         }
     }
 
-    /* 팻샵 dataInsertAll */
+    /* 팻샵 dataInsertUpdate */
     public static void dataInsertUpdate() {
         /* api list - 팻샵 */
         String url = SystemConstants.LOCALDATA_DOMAIN + "?" + "authKey=" + SystemConstants.LOCALDATA_KEY;
