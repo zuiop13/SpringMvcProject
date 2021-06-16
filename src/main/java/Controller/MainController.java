@@ -1,11 +1,13 @@
 package Controller;
 
+import Controller.Util.Util;
 import Controller.xmlFileSearch.XmlFileSearch;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.UnknownHostException;
@@ -19,36 +21,70 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/test01",method = RequestMethod.GET)
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
-    String test01(ModelMap model) throws UnknownHostException {
+    String search(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
         Gson gson = new Gson();
         return gson.toJson(xml.selectKosisData());
     }
 
-    @RequestMapping(value = "/test02",method = RequestMethod.GET)
+    @RequestMapping(value = "/localSearch",method = RequestMethod.GET)
     public @ResponseBody
-    String test02(ModelMap model) throws UnknownHostException {
+    String localSearch(@RequestParam(value="gubun",required=false) String gubun, ModelMap model) throws UnknownHostException {
+        System.out.println("test"+gubun);
         XmlFileSearch xml = new XmlFileSearch();
         Gson gson = new Gson();
-        return gson.toJson(xml.localdataSelect());
+        if(!"".equals(Util.strNull(gubun))){
+            return gson.toJson(xml.localdataSelect(gubun));
+        }else{
+            return null;
+        }
     }
 
-    @RequestMapping(value = "/test03",method = RequestMethod.GET)
-    public @ResponseBody
-    String test03(ModelMap model) throws UnknownHostException {
+
+    @RequestMapping(value = "/dataInsert_02_03_01_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_01_P(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
-        model.addAttribute("Data",xml.selectKosisData());
+        xml.dataInsert_02_03_01_P();
         return "index";
     }
 
-    @RequestMapping(value = "/insertAll",method = RequestMethod.GET)
-    public String insertAll(ModelMap model) throws UnknownHostException {
+    @RequestMapping(value = "/dataInsert_02_03_02_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_02_P(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsertAll();
+        xml.dataInsert_02_03_02_P();
         return "index";
     }
+
+    @RequestMapping(value = "/dataInsert_02_03_03_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_03_P(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsert_02_03_03_P();
+        return "index";
+    }
+
+    @RequestMapping(value = "/dataInsert_02_03_04_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_04_P(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsert_02_03_04_P();
+        return "index";
+    }
+
+    @RequestMapping(value = "/dataInsert_02_03_05_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_05_P(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsert_02_03_05_P();
+        return "index";
+    }
+
+    @RequestMapping(value = "/dataInsert_02_03_06_P",method = RequestMethod.GET)
+    public String dataInsert_02_03_06_P(ModelMap model) throws UnknownHostException {
+        XmlFileSearch xml = new XmlFileSearch();
+        xml.dataInsert_02_03_06_P();
+        return "index";
+    }
+
 
     @RequestMapping(value = "/insertUpdate",method = RequestMethod.GET)
     public String insertUpdate(ModelMap model) throws UnknownHostException {

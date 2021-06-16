@@ -23,14 +23,64 @@ import java.util.Map;
 public class XmlFileSearch {
     public static void main(String[] args) throws ParserConfigurationException {
         //dataInsertAll();
-        dataInsertUpdate();
+        //dataInsertUpdate();
         //localdataSelect();
     }
 
-    /* 팻샵 dataInsertAll */
-    public static void dataInsertAll() {
+    /* 동물병원 dataInsertAll */
+    public static void dataInsert_02_03_01_P() {
         /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH;
+        String filePath = SystemConstants.XML_PATH01;
+        File file = new File(filePath);
+        if (file.exists()) {
+            xmlLocaldataParsing(file);   /* xml parsing */
+        }
+    }
+
+    /* 동물약국 dataInsertAll */
+    public static void dataInsert_02_03_02_P() {
+        /* xml list - 팻샵 */
+        String filePath = SystemConstants.XML_PATH02;
+        File file = new File(filePath);
+        if (file.exists()) {
+            xmlLocaldataParsing(file);   /* xml parsing */
+        }
+    }
+
+    /* 동물용의료용구판매업 dataInsertAll */
+    public static void dataInsert_02_03_03_P() {
+        /* xml list - 팻샵 */
+        String filePath = SystemConstants.XML_PATH03;
+        File file = new File(filePath);
+        if (file.exists()) {
+            xmlLocaldataParsing(file);   /* xml parsing */
+        }
+    }
+
+    /* 동물용의약품도매상 dataInsertAll */
+    public static void dataInsert_02_03_04_P() {
+        /* xml list - 팻샵 */
+        String filePath = SystemConstants.XML_PATH04;
+        File file = new File(filePath);
+        if (file.exists()) {
+            xmlLocaldataParsing(file);   /* xml parsing */
+        }
+    }
+
+    /* 동물장묘업 dataInsertAll */
+    public static void dataInsert_02_03_05_P() {
+        /* xml list - 팻샵 */
+        String filePath = SystemConstants.XML_PATH05;
+        File file = new File(filePath);
+        if (file.exists()) {
+            xmlLocaldataParsing(file);   /* xml parsing */
+        }
+    }
+
+    /* 동물판매업 dataInsertAll */
+    public static void dataInsert_02_03_06_P() {
+        /* xml list - 팻샵 */
+        String filePath = SystemConstants.XML_PATH06;
         File file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
@@ -47,7 +97,6 @@ public class XmlFileSearch {
         }
     }
 
-
     /* view 용 selectKosisData*/
     public static List<Map<String,String>> selectKosisData() {
         List<Map<String,String>> list = null;
@@ -63,7 +112,7 @@ public class XmlFileSearch {
     }
 
     /* 팻샷 SELECT - LIST */
-    public static List<Map<String,String>> localdataSelect(){
+    public static List<Map<String,String>> localdataSelect(String gubun){
         List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -74,13 +123,26 @@ public class XmlFileSearch {
             String username = SystemConstants.DB_USER;
             String password = SystemConstants.DB_PW;
             Connection connection = DriverManager.getConnection(url,username,password);
+            String query = "";
 
-            /*String query = "select * from T_ANIMAL_API where trdStateGbn=?";*/
-            String query = "select * from T_ANIMAL_API where trdStateGbn=? LIMIT 1000";
+            if("02_03_01_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }else if("02_03_02_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }else if("02_03_03_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }else if("02_03_04_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }else if("02_03_05_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }else if("02_03_06_P".equals(gubun)){
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+            }
             pstmt = connection.prepareStatement(query);
-            pstmt.setString(1,"01");
+            pstmt.setString(1,"01"); //사용가능
+            pstmt.setString(2,gubun);   //구분
+            System.out.println(query);
             rs    = pstmt.executeQuery();
-
             while (rs.next()){
                 Map<String,String> map = new HashMap<String,String>();
 
@@ -246,7 +308,7 @@ public class XmlFileSearch {
         System.out.println();
     }
 
-    /* xml parsing - xml */
+    /* xml parsing - api */
     private static void xmlLocaldataParsing(String xml){
         List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         try {
@@ -334,7 +396,7 @@ public class XmlFileSearch {
                         System.out.println("trdStateGbn  : " + trdStateGbn);
                         System.out.println("trdStateNm   : " + trdStateNm);
 
-                        if ("02_03_06_P".equals(opnSvcId)) {
+                        if ("02_03_01_P".equals(opnSvcId) || "02_03_02_P".equals(opnSvcId) || "02_03_03_P".equals(opnSvcId) || "02_03_04_P".equals(opnSvcId) || "02_03_05_P".equals(opnSvcId) || "02_03_06_P".equals(opnSvcId)) {
                             //insert 현재 테스트 중입니다.
                             String sql = "WITH UPSERT AS(\n" +
                                     "\tUPDATE T_ANIMAL_API\n" +
