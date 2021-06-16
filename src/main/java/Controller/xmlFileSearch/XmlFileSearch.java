@@ -22,9 +22,9 @@ import java.util.Map;
 
 public class XmlFileSearch {
     public static void main(String[] args) throws ParserConfigurationException {
-        dataInsertAll();
+        //dataInsertAll();
         dataInsertUpdate();
-        localdataSelect();
+        //localdataSelect();
     }
 
     /* 팻샵 dataInsertAll */
@@ -72,7 +72,7 @@ public class XmlFileSearch {
             Class.forName("org.postgresql.Driver");
             String url      = SystemConstants.DB_URL;
             String username = SystemConstants.DB_USER;
-            String password = SystemConstants.PW;
+            String password = SystemConstants.DB_PW;
             Connection connection = DriverManager.getConnection(url,username,password);
 
             /*String query = "select * from T_ANIMAL_API where trdStateGbn=?";*/
@@ -129,7 +129,7 @@ public class XmlFileSearch {
             Class.forName("org.postgresql.Driver");
             String url      = SystemConstants.DB_URL;
             String username = SystemConstants.DB_USER;
-            String password = SystemConstants.PW;
+            String password = SystemConstants.DB_PW;
             Connection connection = DriverManager.getConnection(url,username,password);
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -254,7 +254,7 @@ public class XmlFileSearch {
             Class.forName("org.postgresql.Driver");
             String url      = SystemConstants.DB_URL;
             String username = SystemConstants.DB_USER;
-            String password = SystemConstants.PW;
+            String password = SystemConstants.DB_PW;
             Connection connection = DriverManager.getConnection(url,username,password);
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
