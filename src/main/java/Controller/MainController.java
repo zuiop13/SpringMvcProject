@@ -16,8 +16,6 @@ public class MainController {
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String test(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        //model.addAttribute("Data",xml.selectKosisData());
         return "index";
     }
 
