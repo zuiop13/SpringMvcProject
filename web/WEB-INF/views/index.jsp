@@ -12,7 +12,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=de357793020bb46467d448f396354148&libraries=services"></script>
 
 <style>
-  div {
+  .main {
     width: 100%;
     height: 100%;
   }
@@ -96,37 +96,47 @@
 
 
 <script type="text/javascript">
-  /* 카카오 맵 초기 설정 */
+  /* 카카오 맵 초기 설정 및 변수 셋팅 */
+  var map;
+  var mapTypeControl;
+  var container;
+  var options;
+  var geocoder;
   $(function(){
-    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    var options = { //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(36.39195639201677, 127.40704329624886), //지도의 중심좌표.
-      level: 12, //지도의 레벨(확대, 축소 정도)
-      mapTypeId : kakao.maps.MapTypeId.ROADMAP
-    };
-    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-    var mapTypeControl = new kakao.maps.MapTypeControl();  // 지도 타입 변경 컨트롤을 생성한다
-    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);  // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+    kakaoInit(36.39195639201677,127.40704329624886);
   });
+
+  function kakaoInit(hiddenLat,hiddenLng){
+    container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+    options = { //지도를 생성할 때 필요한 기본 옵션
+      center: new kakao.maps.LatLng(hiddenLat,hiddenLng), //지도의 중심좌표.
+      level: 10 //지도의 레벨(확대, 축소 정도)
+    };
+    map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+    mapTypeControl = new kakao.maps.MapTypeControl();  // 지도 타입 변경 컨트롤을 생성한다
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);  // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+    // 주소-좌표 변환 객체를 생성합니다
+    geocoder = new kakao.maps.services.Geocoder();
+  }
 
   /* 유기견 센터 */
   function event01(){
-    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    var options = { //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(36.39195639201677, 127.40704329624886), //지도의 중심좌표.
-      level: 12, //지도의 레벨(확대, 축소 정도)
-      mapTypeId : kakao.maps.MapTypeId.ROADMAP
-    };
+    var select = $("#select").val();
+    if(select == "" || select == null){
+      alert("지역을 먼저 선택해 주세요.");
+      return false;
+    }
 
-    var geocoder       = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
-    var map            = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-    var mapTypeControl = new kakao.maps.MapTypeControl();                 // 지도 타입 변경 컨트롤을 생성한다
-    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);  // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+    /* 리셋 */
+    var hiddenLat = $("#hiddenLat").val();
+    var hiddenLng = $("#hiddenLng").val();
+    kakaoInit(hiddenLat,hiddenLng);
 
     $.ajax({
       type: "get",
       url: "/search",
       async : false,
+      data : { select : select},
       dataType:"json",
       success: function (result){
         result.forEach(function (element,index){
@@ -152,25 +162,24 @@
     });
   }
 
-  /* 펫 샵 */
+  /* 로컬 데이타 */
   function event02(gubun){
-    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    var options = { //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(36.39195639201677, 127.40704329624886), //지도의 중심좌표.
-      level: 12, //지도의 레벨(확대, 축소 정도)
-      mapTypeId : kakao.maps.MapTypeId.ROADMAP
-    };
+    var select = $("#select").val();
+    if(select == "" || select == null){
+      alert("지역을 먼저 선택해 주세요.");
+      return false;
+    }
 
-    var geocoder       = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
-    var map            = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-    var mapTypeControl = new kakao.maps.MapTypeControl();                 // 지도 타입 변경 컨트롤을 생성한다
-    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);  // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+    /* 리셋 */
+    var hiddenLat = $("#hiddenLat").val();
+    var hiddenLng = $("#hiddenLng").val();
+    kakaoInit(hiddenLat,hiddenLng);
 
     $.ajax({
       type: "get",
       url: "/localSearch",
       async : false,
-      data : { gubun : gubun },
+      data : { gubun : gubun , select : select},
       dataType:"json",
       success: function (result){
         result.forEach(function (element,index){
@@ -196,9 +205,58 @@
     });
   }
 
-  /* 병원 */
-  function event03(){
-    alert("동물 병원은 준비 중 입니다.");
+  /* 지역 select 이벤트 */
+  function panTo() {
+    var val = $("#select").val();
+    var lat = "";
+    var lng = "";
+
+    if( val == "서울특별시" ){
+      lat = 37.566535;   lng = 126.97796919;
+    }else if( val == "인천광역시" ){
+      lat = 37.45639;   lng = 126.70528;
+    }else if( val == "대전광역시" ){
+      lat = 36.35111;   lng = 127.38500;
+    }else if( val == "대구광역시" ){
+      lat = 35.87222;   lng = 128.60250;
+    }else if( val == "울산광역시" ){
+      lat = 35.53889;    lng = 129.31667;
+    }else if( val == "부산광역시" ){
+      lat = 35.17944;    lng = 129.07556;
+    }else if( val == "광주광역시" ){
+      lat = 35.1595454; lng = 126.8526012;
+    }else if( val == "세종특별자치시" ){
+      lat = 36.48750;  lng = 127.28167;
+    }else if( val == "경기도" ){
+      lat = 37.417771;   lng = 127.521919;
+    }else if( val == "강원도" ){
+      lat = 37.893141;   lng = 128.213197;
+    }else if( val == "충청북도" ){
+      lat = 36.995916;   lng = 127.689729;
+    }else if( val == "충청남도" ){
+      lat = 36.716868;   lng = 126.784369;
+    }else if( val == "경상북도" ){
+      lat = 36.288682;   lng = 128.887613;
+    }else if( val == "경상남도" ){
+      lat = 35.455620;   lng = 128.209619;
+    }else if( val == "전라북도" ){
+      lat = 35.716798;   lng = 127.150097;
+    }else if( val == "전라남도" ){
+      lat = 34.864898;   lng = 126.997167;
+    }else if( val == "제주특별자치도" ){
+      lat = 33.382526;   lng = 126.538488;
+    }else {
+      /* 플랜아이 */
+      lat = 36.39195639201677; lng =127.40704329624886;
+    }
+    $("#hiddenLat").val(lat);
+    $("#hiddenLng").val(lng);
+
+    // 이동할 위도 경도 위치를 생성합니다
+    var moveLatLon = new kakao.maps.LatLng(lat, lng);
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    map.panTo(moveLatLon);
   }
 
 </script>
@@ -208,11 +266,35 @@
     <title>KakaoTest</title>
   </head>
   <body>
+  <input type="hidden" id="hiddenLat" value=""/>
+  <input type="hidden" id="hiddenLng" value=""/>
 
-  <div>
+  <div  class="main">
     <%--  카카오 맵 --%>
     <div class="left">
       <div id="map" style="width:100%;height:900px;"></div>
+
+      <select id="select" onchange="panTo()">
+        <option value="">지역 선택</option>
+        <option value="서울특별시">서울특별시</option>
+        <option value="인천광역시">인천광역시</option>
+        <option value="대전광역시">대전광역시</option>
+        <option value="대구광역시">대구광역시</option>
+        <option value="울산광역시">울산광역시</option>
+        <option value="부산광역시">부산광역시</option>
+        <option value="광주광역시">광주광역시</option>
+        <option value="세종특별자치시">세종특별자치시</option>
+        <option value="경기도">경기도</option>
+        <option value="강원도">강원도</option>
+        <option value="충청북도">충청북도</option>
+        <option value="충청남도">충청남도</option>
+        <option value="경상북도">경상북도</option>
+        <option value="경상남도">경상남도</option>
+        <option value="전라북도">전라북도</option>
+        <option value="전라남도">전라남도</option>
+        <option value="제주특별자치도">제주특별자치도</option>
+      </select>
+
       <button onclick="event01();" >유기견 센터</button>
       <button onclick="event02('02_03_01_P');" >동물 병원</button>
       <button onclick="event02('02_03_02_P');" >동물 약국</button>

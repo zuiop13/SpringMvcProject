@@ -90,7 +90,8 @@ public class XmlFileSearch {
     /* 팻샵 dataInsertUpdate */
     public static void dataInsertUpdate() {
         /* api list - 팻샵 */
-        String url = SystemConstants.LOCALDATA_DOMAIN + "?" + "authKey=" + SystemConstants.LOCALDATA_KEY;
+        int pageSize = 10000;
+        String url = SystemConstants.LOCALDATA_DOMAIN + "?" + "authKey=" + SystemConstants.LOCALDATA_KEY+"&"+"pageSize="+pageSize;
         String xml = RestApiMain.getApiXmlCall(url);    /* api call */
         if (xml != null) {
             xmlLocaldataParsing(xml);     /* xml parsing */
@@ -98,7 +99,7 @@ public class XmlFileSearch {
     }
 
     /* view 용 selectKosisData*/
-    public static List<Map<String,String>> selectKosisData() {
+    public static List<Map<String,String>> selectKosisData(String select) {
         List<Map<String,String>> list = null;
         //* api list - 공공 데이터
         int rows = 1000000000;
@@ -106,13 +107,13 @@ public class XmlFileSearch {
         String xml = RestApiMain.getApiXmlCall(url);
         if(xml != null){
             System.out.println(url);
-            list = xmlKosisParsing(xml);
+            list = xmlKosisParsing(xml,select);
         }
         return list;
     }
 
     /* 팻샷 SELECT - LIST */
-    public static List<Map<String,String>> localdataSelect(String gubun){
+    public static List<Map<String,String>> localdataSelect(String gubun,String select){
         List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -126,21 +127,22 @@ public class XmlFileSearch {
             String query = "";
 
             if("02_03_01_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }else if("02_03_02_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }else if("02_03_03_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }else if("02_03_04_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }else if("02_03_05_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }else if("02_03_06_P".equals(gubun)){
-                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? LIMIT 1000";
+                query = "select * from T_ANIMAL_API where trdStateGbn=? and opnsvcid=? and sitewhladdr like '%'||?||'%'";
             }
             pstmt = connection.prepareStatement(query);
             pstmt.setString(1,"01"); //사용가능
             pstmt.setString(2,gubun);   //구분
+            pstmt.setString(3,select);  //지역
             System.out.println(query);
             rs    = pstmt.executeQuery();
             while (rs.next()){
@@ -241,6 +243,8 @@ public class XmlFileSearch {
                     trdStateGbn = Util.strNull(getTagValue("trdStateGbn", eElement)).replace("'","''").trim();
                     trdStateNm  = Util.strNull(getTagValue("trdStateNm", eElement)).replace("'","''").trim();
 
+                    /* 비어있는 주소 교체*/
+                    siteWhlAddr = siteWhlAddr == ""?rdnWhlAddr:siteWhlAddr;
                     /* 중복 주소는 데이터에 넣지 않는다. - 추후 결정하기 */
                     int cnt = 0;
                     for(int i=0;i < listMap.size();i++){
@@ -367,6 +371,8 @@ public class XmlFileSearch {
                     trdStateGbn = Util.strNull(getTagValue("trdStateGbn", eElement)).replace("'","''").trim();
                     trdStateNm  = Util.strNull(getTagValue("trdStateNm", eElement)).replace("'","''").trim();
 
+                    /* 비어있는 주소 교체*/
+                    siteWhlAddr = siteWhlAddr == ""?rdnWhlAddr:siteWhlAddr;
                     /* 중복 주소는 데이터에 넣지 않는다. - 추후 결정하기 */
                     int cnt = 0;
                     for(int i=0;i < listMap.size();i++){
@@ -466,7 +472,7 @@ public class XmlFileSearch {
 
 
     /* Kosis xml parsing - xml */
-    public static List<Map<String,String>> xmlKosisParsing(String xml){
+    public static List<Map<String,String>> xmlKosisParsing(String xml,String select){
         List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -519,33 +525,35 @@ public class XmlFileSearch {
                     }
 
                     if(cnt == 0) {
-                        // db insert data list
-                        System.out.println("=============================================================================");
-                        System.out.println("careNm      : " + careNm);
-                        System.out.println("careTel     : " + careTel);
-                        System.out.println("careAddr    : " + careAddr);
-                        System.out.println("divisionNm  : " + divisionNm);
-                        System.out.println("lat   : " + lat);
-                        System.out.println("lng   : " + lng);
-                        System.out.println("weekOprStime    : " + weekOprStime);
-                        System.out.println("weekOprEtime    : " + weekOprEtime);
-                        System.out.println("saveTrgtAnimal  : " + saveTrgtAnimal);
-                        System.out.println("dsignationDate  : " + dsignationDate);
-                        System.out.println("dataStdDt       : " + dataStdDt);
-                        System.out.println("=======================DB insert/update 성공=================================");
-                        System.out.println("============================================================================");
-                        map.put("careNm", careNm);
-                        map.put("careTel", careTel);
-                        map.put("careAddr", careAddr);
-                        map.put("divisionNm", divisionNm);
-                        map.put("weekOprStime", weekOprStime);
-                        map.put("weekOprEtime", weekOprEtime);
-                        map.put("lat", lat);
-                        map.put("lng", lng);
-                        map.put("saveTrgtAnimal", saveTrgtAnimal);
-                        map.put("dsignationDate", dsignationDate);
-                        map.put("dataStdDt", dataStdDt);
-                        listMap.add(map);
+                        if(careAddr.indexOf(select) > -1) {  /* 주소 검색해서 찾기 */
+                            // db insert data list
+                            System.out.println("=============================================================================");
+                            System.out.println("careNm      : " + careNm);
+                            System.out.println("careTel     : " + careTel);
+                            System.out.println("careAddr    : " + careAddr);
+                            System.out.println("divisionNm  : " + divisionNm);
+                            System.out.println("lat   : " + lat);
+                            System.out.println("lng   : " + lng);
+                            System.out.println("weekOprStime    : " + weekOprStime);
+                            System.out.println("weekOprEtime    : " + weekOprEtime);
+                            System.out.println("saveTrgtAnimal  : " + saveTrgtAnimal);
+                            System.out.println("dsignationDate  : " + dsignationDate);
+                            System.out.println("dataStdDt       : " + dataStdDt);
+                            System.out.println("=======================DB insert/update 성공=================================");
+                            System.out.println("============================================================================");
+                            map.put("careNm", careNm);
+                            map.put("careTel", careTel);
+                            map.put("careAddr", careAddr);
+                            map.put("divisionNm", divisionNm);
+                            map.put("weekOprStime", weekOprStime);
+                            map.put("weekOprEtime", weekOprEtime);
+                            map.put("lat", lat);
+                            map.put("lng", lng);
+                            map.put("saveTrgtAnimal", saveTrgtAnimal);
+                            map.put("dsignationDate", dsignationDate);
+                            map.put("dataStdDt", dataStdDt);
+                            listMap.add(map);
+                        }
                     }
                 }
             }

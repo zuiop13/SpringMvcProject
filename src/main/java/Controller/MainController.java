@@ -23,26 +23,28 @@ public class MainController {
 
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public @ResponseBody
-    String search(ModelMap model) throws UnknownHostException {
+    String search(@RequestParam(value="select",required=false) String select
+                 ,ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
         Gson gson = new Gson();
-        return gson.toJson(xml.selectKosisData());
+        return gson.toJson(xml.selectKosisData(select));
     }
 
     @RequestMapping(value = "/localSearch",method = RequestMethod.GET)
     public @ResponseBody
-    String localSearch(@RequestParam(value="gubun",required=false) String gubun, ModelMap model) throws UnknownHostException {
-        System.out.println("test"+gubun);
+    String localSearch(@RequestParam(value="gubun",required=false)  String gubun
+                     , @RequestParam(value="select",required=false) String select
+                     , ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
         Gson gson = new Gson();
         if(!"".equals(Util.strNull(gubun))){
-            return gson.toJson(xml.localdataSelect(gubun));
+            return gson.toJson(xml.localdataSelect(gubun,select));
         }else{
             return null;
         }
     }
 
-
+    /* 데이터 이관 작업 01~06 */
     @RequestMapping(value = "/dataInsert_02_03_01_P",method = RequestMethod.GET)
     public String dataInsert_02_03_01_P(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
