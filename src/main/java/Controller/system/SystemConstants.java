@@ -36,8 +36,8 @@ public class SystemConstants {
     //public static final String XML_PATH06   = "C:/Users/PRO/Desktop/동물보호복지온라인/xml/fulldata_02_03_06_P_동물판매업.xml";           // xml 파일경로
 
     //DB 정보
-    public static final String DB_URL    = "jdbc:postgresql://3.36.203.84:5432/springdata"; //운영
-    //public static final String DB_URL    = "jdbc:postgresql://127.0.1.1:5432/springdata"; //개발
+    //public static final String DB_URL    = "jdbc:postgresql://3.36.203.84:5432/springdata"; //운영
+    public static final String DB_URL    = "jdbc:postgresql://127.0.1.1:5432/springdata"; //개발
     public static final String DB_USER   = "zuiop13";
     public static final String DB_PW     = "pass";
 }
