@@ -45,50 +45,14 @@ public class MainController {
     }
 
     /* 데이터 이관 작업 01~06 */
-    @RequestMapping(value = "/dataInsert_02_03_01_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_01_P(ModelMap model) throws UnknownHostException {
+    @RequestMapping(value = "/apiXmlinsert",method = RequestMethod.GET)
+    public String dataInsert(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_01_P();
+        xml.dataInsert();
         return "index";
     }
 
-    @RequestMapping(value = "/dataInsert_02_03_02_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_02_P(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_02_P();
-        return "index";
-    }
-
-    @RequestMapping(value = "/dataInsert_02_03_03_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_03_P(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_03_P();
-        return "index";
-    }
-
-    @RequestMapping(value = "/dataInsert_02_03_04_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_04_P(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_04_P();
-        return "index";
-    }
-
-    @RequestMapping(value = "/dataInsert_02_03_05_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_05_P(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_05_P();
-        return "index";
-    }
-
-    @RequestMapping(value = "/dataInsert_02_03_06_P",method = RequestMethod.GET)
-    public String dataInsert_02_03_06_P(ModelMap model) throws UnknownHostException {
-        XmlFileSearch xml = new XmlFileSearch();
-        xml.dataInsert_02_03_06_P();
-        return "index";
-    }
-
-
-    @RequestMapping(value = "/insertUpdate",method = RequestMethod.GET)
+    @RequestMapping(value = "/apiUpdate",method = RequestMethod.GET)
     public String insertUpdate(ModelMap model) throws UnknownHostException {
         XmlFileSearch xml = new XmlFileSearch();
         xml.dataInsertUpdate();

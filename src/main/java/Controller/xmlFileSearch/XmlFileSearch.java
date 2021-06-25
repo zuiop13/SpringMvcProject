@@ -28,60 +28,39 @@ public class XmlFileSearch {
     }
 
     /* 동물병원 dataInsertAll */
-    public static void dataInsert_02_03_01_P() {
-        /* xml list - 팻샵 */
+    public static void dataInsert() {
         String filePath = SystemConstants.XML_PATH01;
         File file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
-    }
 
-    /* 동물약국 dataInsertAll */
-    public static void dataInsert_02_03_02_P() {
-        /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH02;
-        File file = new File(filePath);
+        filePath = SystemConstants.XML_PATH02;
+        file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
-    }
 
-    /* 동물용의료용구판매업 dataInsertAll */
-    public static void dataInsert_02_03_03_P() {
-        /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH03;
-        File file = new File(filePath);
+        filePath = SystemConstants.XML_PATH03;
+        file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
-    }
 
-    /* 동물용의약품도매상 dataInsertAll */
-    public static void dataInsert_02_03_04_P() {
-        /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH04;
-        File file = new File(filePath);
+        filePath = SystemConstants.XML_PATH04;
+        file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
-    }
 
-    /* 동물장묘업 dataInsertAll */
-    public static void dataInsert_02_03_05_P() {
-        /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH05;
-        File file = new File(filePath);
+        filePath = SystemConstants.XML_PATH05;
+        file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
-    }
 
-    /* 동물판매업 dataInsertAll */
-    public static void dataInsert_02_03_06_P() {
-        /* xml list - 팻샵 */
-        String filePath = SystemConstants.XML_PATH06;
-        File file = new File(filePath);
+        filePath = SystemConstants.XML_PATH06;
+        file = new File(filePath);
         if (file.exists()) {
             xmlLocaldataParsing(file);   /* xml parsing */
         }
@@ -187,7 +166,6 @@ public class XmlFileSearch {
 
     /* xml parsing - file */
     private static void xmlLocaldataParsing(File file){
-        List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         try {
             /* db 접근 */
             Class.forName("org.postgresql.Driver");
@@ -245,57 +223,34 @@ public class XmlFileSearch {
 
                     /* 비어있는 주소 교체*/
                     siteWhlAddr = siteWhlAddr == ""?rdnWhlAddr:siteWhlAddr;
-                    /* 중복 주소는 데이터에 넣지 않는다. - 추후 결정하기 */
-                    int cnt = 0;
-                    for(int i=0;i < listMap.size();i++){
-                        if(Util.strNull(listMap.get(i).get("siteWhlAddr")).equals(siteWhlAddr)){
-                            cnt++;
-                        }
-                    }
 
-                   if(cnt == 0){
-                        // db insert data list
-                        System.out.println("=====================================================================");
-                        System.out.println("rowNum    : " + rowNum);
-                        System.out.println("mgtNo     : " + mgtNo);
-                        System.out.println("opnSvcNm  : " + opnSvcNm);
-                        System.out.println("opnSvcId  : " + opnSvcId);
+                    // db insert data list
+                    System.out.println("=====================================================================");
+                    System.out.println("rowNum    : " + rowNum);
+                    System.out.println("mgtNo     : " + mgtNo);
+                    System.out.println("opnSvcNm  : " + opnSvcNm);
+                    System.out.println("opnSvcId  : " + opnSvcId);
 
-                        System.out.println("bplcNm    : " + bplcNm);
-                        System.out.println("siteTel   : " + siteTel);
+                    System.out.println("bplcNm    : " + bplcNm);
+                    System.out.println("siteTel   : " + siteTel);
 
-                        System.out.println("siteWhlAddr  : " + siteWhlAddr);
-                        System.out.println("rdnWhlAddr   : " + rdnWhlAddr);
-                        System.out.println("rdnPostNo    : " + rdnPostNo);
+                    System.out.println("siteWhlAddr  : " + siteWhlAddr);
+                    System.out.println("rdnWhlAddr   : " + rdnWhlAddr);
+                    System.out.println("rdnPostNo    : " + rdnPostNo);
 
-                        System.out.println("x  : " + x);
-                        System.out.println("y  : " + y);
+                    System.out.println("x  : " + x);
+                    System.out.println("y  : " + y);
 
-                        System.out.println("trdStateGbn  : " + trdStateGbn);
-                        System.out.println("trdStateNm   : " + trdStateNm);
+                    System.out.println("trdStateGbn  : " + trdStateGbn);
+                    System.out.println("trdStateNm   : " + trdStateNm);
 
-                        map.put("mgtNo", mgtNo);
-                        map.put("opnSvcNm", opnSvcNm);
-                        map.put("opnSvcId", opnSvcId);
-                        map.put("bplcNm", bplcNm);
-                        map.put("siteTel", siteTel);
-                        map.put("siteWhlAddr", siteWhlAddr);
-                        map.put("rdnWhlAddr", rdnWhlAddr);
-                        map.put("rdnPostNo", rdnPostNo);
-                        map.put("x", x);
-                        map.put("y", y);
-                        map.put("trdStateGbn", trdStateGbn);
-                        map.put("trdStateNm", trdStateNm);
-                        listMap.add(map);
-
-                        //insert 현재 테스트 중입니다.
-                        String sql = "INSERT INTO t_animal_api(mgtno, opnsvcnm, opnsvcid , bplcnm, sitetel, sitewhladdr, rdnwhladdr, rdnpostno, x, y, trdstategbn, trdstatenm)"+ "VALUES('"+mgtNo+"','"+opnSvcNm+"','"+opnSvcId+"','"+bplcNm+"','"+siteTel+"','"+siteWhlAddr+"','"+rdnWhlAddr+"','"+rdnPostNo+"','"+x+"','"+y+"','"+trdStateGbn+"','"+trdStateNm+"')";
-                        System.out.println(sql);
-                        PreparedStatement statement = connection.prepareStatement(sql);
-                        statement.execute();
-                        System.out.println("=======================DB insert 성공=================================");
-                        System.out.println("=====================================================================");
-                   }
+                    //insert 현재 테스트 중입니다.
+                    String sql = "INSERT INTO t_animal_api(mgtno, opnsvcnm, opnsvcid , bplcnm, sitetel, sitewhladdr, rdnwhladdr, rdnpostno, x, y, trdstategbn, trdstatenm)"+ "VALUES('"+mgtNo+"','"+opnSvcNm+"','"+opnSvcId+"','"+bplcNm+"','"+siteTel+"','"+siteWhlAddr+"','"+rdnWhlAddr+"','"+rdnPostNo+"','"+x+"','"+y+"','"+trdStateGbn+"','"+trdStateNm+"')";
+                    System.out.println(sql);
+                    PreparedStatement statement = connection.prepareStatement(sql);
+                    statement.execute();
+                    System.out.println("=======================DB insert 성공=================================");
+                    System.out.println("=====================================================================");
                 }
             }
         }catch(ParserConfigurationException e){
@@ -314,7 +269,6 @@ public class XmlFileSearch {
 
     /* xml parsing - api */
     private static void xmlLocaldataParsing(String xml){
-        List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
         try {
             /* db 접근 */
             Class.forName("org.postgresql.Driver");
@@ -327,6 +281,7 @@ public class XmlFileSearch {
             DocumentBuilder documentBuilder = factory.newDocumentBuilder();
             InputStream is =new ByteArrayInputStream(xml.getBytes());
             Document document = documentBuilder.parse(is);
+
             /* */
             document.getDocumentElement().normalize();
             System.out.println("Root name: " + document.getDocumentElement().getNodeName());
@@ -373,86 +328,77 @@ public class XmlFileSearch {
 
                     /* 비어있는 주소 교체*/
                     siteWhlAddr = siteWhlAddr == ""?rdnWhlAddr:siteWhlAddr;
-                    /* 중복 주소는 데이터에 넣지 않는다. - 추후 결정하기 */
-                    int cnt = 0;
-                    for(int i=0;i < listMap.size();i++){
-                        if(Util.strNull(listMap.get(i).get("siteWhlAddr")).equals(siteWhlAddr)){
-                            cnt++;
-                        }
-                    }
 
-                    if(cnt == 0) {
-                        // db insert data list
+                    // db insert data list
+                    System.out.println("=====================================================================");
+                    System.out.println("rowNum    : " + rowNum);
+                    System.out.println("mgtNo     : " + mgtNo);
+                    System.out.println("opnSvcNm  : " + opnSvcNm);
+                    System.out.println("opnSvcId  : " + opnSvcId);
+
+                    System.out.println("bplcNm    : " + bplcNm);
+                    System.out.println("siteTel   : " + siteTel);
+
+                    System.out.println("siteWhlAddr  : " + siteWhlAddr);
+                    System.out.println("rdnWhlAddr   : " + rdnWhlAddr);
+                    System.out.println("rdnPostNo    : " + rdnPostNo);
+
+                    System.out.println("x  : " + x);
+                    System.out.println("y  : " + y);
+
+                    System.out.println("trdStateGbn  : " + trdStateGbn);
+                    System.out.println("trdStateNm   : " + trdStateNm);
+
+                    if ("02_03_01_P".equals(opnSvcId) || "02_03_02_P".equals(opnSvcId) || "02_03_03_P".equals(opnSvcId) || "02_03_04_P".equals(opnSvcId) || "02_03_05_P".equals(opnSvcId) || "02_03_06_P".equals(opnSvcId)) {
+                        //insert 현재 테스트 중입니다.
+                        String sql = "WITH UPSERT AS(\n" +
+                                "\tUPDATE T_ANIMAL_API\n" +
+                                "\t   SET opnSvcNm    = '" + opnSvcNm + "'\n" +
+                                "\t\t , opnSvcId      = '" + opnSvcId + "'\n" +
+                                "\t\t , bplcNm\t      = '" + bplcNm + "'\n" +
+                                "\t\t , siteTel\t     = '" + siteTel + "'\n" +
+                                "\t\t , siteWhlAddr   = '" + siteWhlAddr + "'\n" +
+                                "\t\t , rdnWhlAddr    = '" + rdnWhlAddr + "'\n" +
+                                "\t\t , rdnPostNo     = '" + rdnPostNo + "'\n" +
+                                "\t\t , x\t\t         = '" + x + "'\n" +
+                                "\t\t , y \t\t        = '" + y + "'\n" +
+                                "\t\t , trdStateGbn   = '" + trdStateGbn + "'\n" +
+                                "\t\t , trdStateNm    = '" + trdStateNm + "'\n" +
+                                "\t WHERE mgtNo       = '" + mgtNo + "' RETURNING *\n" +
+                                ")\n" +
+                                "INSERT\n" +
+                                "  INTO T_ANIMAL_API (\n" +
+                                "\t   mgtNo\n" +
+                                "\t , opnSvcNm\n" +
+                                "\t , opnSvcId\n" +
+                                "\t , bplcNm\n" +
+                                "\t , siteTel\n" +
+                                "\t , siteWhlAddr\n" +
+                                "\t , rdnWhlAddr\n" +
+                                "\t , rdnPostNo\n" +
+                                "\t , x\n" +
+                                "\t , y \n" +
+                                "\t , trdStateGbn\n" +
+                                "\t , trdStateNm\n" +
+                                ")\n" +
+                                "SELECT '" + mgtNo + "'\n" +
+                                "     , '" + opnSvcNm + "'\n" +
+                                "     , '" + opnSvcId + "'\n" +
+                                "     , '" + bplcNm + "'\n" +
+                                "     , '" + siteTel + "'\n" +
+                                "     , '" + siteWhlAddr + "'\n" +
+                                "     , '" + rdnWhlAddr + "'\n" +
+                                "     , '" + rdnPostNo + "'\n" +
+                                "     , '" + x + "'\n" +
+                                "     , '" + y + "'\n" +
+                                "     , '" + trdStateGbn + "'\n" +
+                                "     , '" + trdStateNm + "'\n" +
+                                " WHERE NOT EXISTS ( SELECT * FROM UPSERT )";
+                        System.out.println(sql);
+                        PreparedStatement statement = connection.prepareStatement(sql);
+                        statement.execute();
+                        System.out.println("=======================DB insert/update 성공=================================");
                         System.out.println("=====================================================================");
-                        System.out.println("rowNum    : " + rowNum);
-                        System.out.println("mgtNo     : " + mgtNo);
-                        System.out.println("opnSvcNm  : " + opnSvcNm);
-                        System.out.println("opnSvcId  : " + opnSvcId);
-
-                        System.out.println("bplcNm    : " + bplcNm);
-                        System.out.println("siteTel   : " + siteTel);
-
-                        System.out.println("siteWhlAddr  : " + siteWhlAddr);
-                        System.out.println("rdnWhlAddr   : " + rdnWhlAddr);
-                        System.out.println("rdnPostNo    : " + rdnPostNo);
-
-                        System.out.println("x  : " + x);
-                        System.out.println("y  : " + y);
-
-                        System.out.println("trdStateGbn  : " + trdStateGbn);
-                        System.out.println("trdStateNm   : " + trdStateNm);
-
-                        if ("02_03_01_P".equals(opnSvcId) || "02_03_02_P".equals(opnSvcId) || "02_03_03_P".equals(opnSvcId) || "02_03_04_P".equals(opnSvcId) || "02_03_05_P".equals(opnSvcId) || "02_03_06_P".equals(opnSvcId)) {
-                            //insert 현재 테스트 중입니다.
-                            String sql = "WITH UPSERT AS(\n" +
-                                    "\tUPDATE T_ANIMAL_API\n" +
-                                    "\t   SET opnSvcNm    = '" + opnSvcNm + "'\n" +
-                                    "\t\t , opnSvcId      = '" + opnSvcId + "'\n" +
-                                    "\t\t , bplcNm\t      = '" + bplcNm + "'\n" +
-                                    "\t\t , siteTel\t     = '" + siteTel + "'\n" +
-                                    "\t\t , siteWhlAddr   = '" + siteWhlAddr + "'\n" +
-                                    "\t\t , rdnWhlAddr    = '" + rdnWhlAddr + "'\n" +
-                                    "\t\t , rdnPostNo     = '" + rdnPostNo + "'\n" +
-                                    "\t\t , x\t\t         = '" + x + "'\n" +
-                                    "\t\t , y \t\t        = '" + y + "'\n" +
-                                    "\t\t , trdStateGbn   = '" + trdStateGbn + "'\n" +
-                                    "\t\t , trdStateNm    = '" + trdStateNm + "'\n" +
-                                    "\t WHERE mgtNo       = '" + mgtNo + "' RETURNING *\n" +
-                                    ")\n" +
-                                    "INSERT\n" +
-                                    "  INTO T_ANIMAL_API (\n" +
-                                    "\t   mgtNo\n" +
-                                    "\t , opnSvcNm\n" +
-                                    "\t , opnSvcId\n" +
-                                    "\t , bplcNm\n" +
-                                    "\t , siteTel\n" +
-                                    "\t , siteWhlAddr\n" +
-                                    "\t , rdnWhlAddr\n" +
-                                    "\t , rdnPostNo\n" +
-                                    "\t , x\n" +
-                                    "\t , y \n" +
-                                    "\t , trdStateGbn\n" +
-                                    "\t , trdStateNm\n" +
-                                    ")\n" +
-                                    "SELECT '" + mgtNo + "'\n" +
-                                    "     , '" + opnSvcNm + "'\n" +
-                                    "     , '" + opnSvcId + "'\n" +
-                                    "     , '" + bplcNm + "'\n" +
-                                    "     , '" + siteTel + "'\n" +
-                                    "     , '" + siteWhlAddr + "'\n" +
-                                    "     , '" + rdnWhlAddr + "'\n" +
-                                    "     , '" + rdnPostNo + "'\n" +
-                                    "     , '" + x + "'\n" +
-                                    "     , '" + y + "'\n" +
-                                    "     , '" + trdStateGbn + "'\n" +
-                                    "     , '" + trdStateNm + "'\n" +
-                                    " WHERE NOT EXISTS ( SELECT * FROM UPSERT )";
-                            System.out.println(sql);
-                            PreparedStatement statement = connection.prepareStatement(sql);
-                            statement.execute();
-                            System.out.println("=======================DB insert/update 성공=================================");
-                            System.out.println("=====================================================================");
-                        }
                     }
                 }
             }
