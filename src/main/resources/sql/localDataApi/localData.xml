@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="localData">
+    <select id="select" parameterType="zuiop.xmlFileSearch.vo.LocalApiVO" resultType="zuiop.xmlFileSearch.vo.LocalApiVO">
+        SELECT BPLCNM ,MGTNO ,OPNSVCID ,OPNSVCNM ,RDNPOSTNO ,RDNWHLADDR ,SITETEL ,SITEWHLADDR ,TRDSTATEGBN ,TRDSTATENM ,X ,Y
+          FROM t_animal_api
+         where 1 = 1
+           and trdStateGbn = #{trdStateGbn}
+           and opnSvcId    = #{opnSvcId}
+           and siteWhlAddr like '%'||#{siteWhlAddr}||'%'
+    </select>
+</mapper>
